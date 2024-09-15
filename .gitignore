@@ -3,3 +3,5 @@
 *.gguf
 data/
 __pycache__/
+.env
+.envrc
