@@ -1,6 +1,6 @@
 from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings
+from langchain_cohere import CohereEmbeddings
 from langchain.vectorstores import FAISS
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain import PromptTemplate
@@ -72,7 +72,7 @@ def encode_pdf(path, chunk_size=1000, chunk_overlap=200):
     cleaned_texts = replace_t_with_space(texts)
 
     # Create embeddings and vector store
-    embeddings = OpenAIEmbeddings()
+    embeddings = CohereEmbeddings(model="embed-english-v3.0")
     vectorstore = FAISS.from_documents(cleaned_texts, embeddings)
 
     return vectorstore
@@ -119,7 +119,7 @@ def encode_from_string(content, chunk_size=1000, chunk_overlap=200):
             chunk.metadata['relevance_score'] = 1.0
 
         # Generate embeddings and create the vector store
-        embeddings = OpenAIEmbeddings()
+        embeddings = CohereEmbeddings(model="embed-english-v3.0")
         vectorstore = FAISS.from_documents(chunks, embeddings)
 
     except Exception as e:
